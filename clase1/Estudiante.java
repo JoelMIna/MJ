@@ -1,3 +1,4 @@
+package clase1;
 import java.util.Arrays;
 
 public class Estudiante{
@@ -25,3 +26,4 @@ public class Estudiante{
     public String toString() {
         return "Estudiante: [id: " + id + "cedula: " + cedula + "Nombre:" + nombre + "Facultad:"+facultad+"]" ;
 }   
+}
