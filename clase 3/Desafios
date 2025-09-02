@@ -1,0 +1,72 @@
+import java.util.ArrayList;
+
+public class Desafios {
+   // Actualizar precio de un libro
+    public static boolean actualizarPrecioLibro(ArrayList<Libro> libros, String titulo, double nuevoPrecio) {
+        for (Libro libro : libros) {
+            if (libro.getTitulo().equals(titulo)) {
+                libro.setPrecio(nuevoPrecio);
+                return true;
+            }
+        }
+        return false;
+    }
+
+     //Búsqueda secuencial por título
+    public static Libro buscarLibroPorTitulo(ArrayList<Libro> libros, String titulo) {
+        for (Libro libro : libros) {
+            if (libro.getTitulo().equals(titulo)) {
+                return libro;
+            }
+        }
+        return null;
+    }
+
+  // Operaciones sobre arreglo de estudiantes
+    public static void agregarEstudiante(ArrayList<Estudiante> estudiantes, Estudiante estudiante) {
+        estudiantes.add(estudiante);
+    }
+
+    public static boolean eliminarEstudiante(ArrayList<Estudiante> estudiantes, String matricula) {
+        for (Estudiante estudiante : estudiantes) {
+            if (estudiante.getMatricula().equals(matricula)) {
+                estudiantes.remove(estudiante);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static Estudiante buscarEstudiante(ArrayList<Estudiante> estudiantes, String matricula) {
+        for (Estudiante estudiante : estudiantes) {
+            if (estudiante.getMatricula().equals(matricula)) {
+                return estudiante;
+            }
+        }
+        return null;
+    }
+
+    // Ejemplo 
+    public static void main(String[] args) {
+        ArrayList<Libro> libros = new ArrayList<>();
+        libros.add(new Libro("Cien años de soledad", "Gabriel García Márquez", 200));
+        libros.add(new Libro("El principito", "Antoine de Saint-Exupéry", 150));
+
+        actualizarPrecioLibro(libros, "El principito", 180);
+        Libro libroEncontrado = buscarLibroPorTitulo(libros, "Cien años de soledad");
+        if (libroEncontrado != null) {
+            System.out.println("Libro encontrado: " + libroEncontrado.getTitulo() + ", Precio: " + libroEncontrado.getPrecio());
+        }
+
+        ArrayList<Estudiante> estudiantes = new ArrayList<>();
+        agregarEstudiante(estudiantes, new Estudiante("Ana", "A001", 9.5));
+        agregarEstudiante(estudiantes, new Estudiante("Luis", "A002", 8.7));
+
+        Estudiante estudiante = buscarEstudiante(estudiantes, "A001");
+        if (estudiante != null) {
+            System.out.println("Estudiante encontrado: " + estudiante.getNombre() + ", Promedio: " + estudiante.getPromedio());
+        }
+
+        eliminarEstudiante(estudiantes, "A002");
+    }
+}
