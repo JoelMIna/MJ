@@ -59,8 +59,8 @@ public class Desafios {
         }
 
         ArrayList<Estudiante> estudiantes = new ArrayList<>();
-        agregarEstudiante(estudiantes, new Estudiante("Ana", "A001", 9.5));
-        agregarEstudiante(estudiantes, new Estudiante("Luis", "A002", 8.7));
+        agregarEstudiante(estudiantes, new Estudiante("Joel", "A001", 9.5));
+        agregarEstudiante(estudiantes, new Estudiante("karman", "A002", 8.7));
 
         Estudiante estudiante = buscarEstudiante(estudiantes, "A001");
         if (estudiante != null) {
