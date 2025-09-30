@@ -6,7 +6,7 @@ public class Ejercicio4 {
         int[] numeros = {1,2,3,4,5,6,7,8,9,0};
 
         if (numeros.length != 10) {
-            System.out.println("Error: deben ser 10 dígitos.");
+            System.out.println("Error solo 10");
             return;
         }
 
@@ -15,8 +15,8 @@ public class Ejercicio4 {
             cola.add(n);
         }
 
-        String telefono = "(";
-        for (int i = 0; i < 3; i++) telefono += cola.poll();
+        String telefono = "("; // Inicializa la cadena con un paréntesis de apertura.
+        for (int i = 0; i < 3; i++) telefono += cola.poll(); // extrae los primeros 3 dígitos. 
         telefono += ") ";
         for (int i = 0; i < 3; i++) telefono += cola.poll();
         telefono += "-";

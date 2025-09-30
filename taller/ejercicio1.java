@@ -5,10 +5,10 @@ public class ejercicio1 {
     public static void main(String[] args) {
         int upvotes = 13;
         int downvotes = 0;
-
+        //pila
         Queue<Integer> cola = new LinkedList<>();
 
-        // Encolamos los votos (+1 y -1)
+        
         for (int i = 0; i < upvotes; i++) {
             cola.add(1);
         }

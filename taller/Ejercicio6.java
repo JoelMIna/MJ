@@ -7,21 +7,17 @@ public class Ejercicio6 {
         String[] nombres = {"Adam", "Sarah", "Malcolm"};
 
         Queue<String> cola = new LinkedList<>();
-        for (String n : nombres) {
-            cola.add(n);
+        for (int i = 0; i < nombres.length; i++) {
+            cola.add(nombres[i]);
         }
+        String letras  = "";
+        int count = cola.size();
+        for (int i = 0; i < count; i++) {
 
-        String letras = "";
-        while (!cola.isEmpty()) {
-            String nombre = cola.poll();
-            char inicial = Character.toUpperCase(nombre.charAt(0));
-            letras += inicial;
-        }
-
-        char[] arr = letras.toCharArray();
-        Arrays.sort(arr);
-
-        String sociedad = new String(arr);
-        System.out.println("Sociedad secreta: " + sociedad);
+            letras +=  cola.poll().charAt(0);
+        
     }
+    
+    }
+    return letras;
 }
