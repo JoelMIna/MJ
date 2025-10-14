@@ -31,8 +31,9 @@ public class gestorTareas {
         }
         return tarea;
    }
+   
+}
 
-
-   }
+   
 
 
