@@ -44,10 +44,11 @@ package parcial;
     // creamos una cola circular con una capacidad igual a la lonmgitud de la cadena 
     ColaCircularEnteros cola = new ColaCircularEnteros (s.length());
      //Recorrer cada caracter de la cadena
-    for (char c : s.toCharArray()) {
+    for (char c : s.toCharArray()) { 
         // Si es '(', encolar +1
-        if (c == '(') {
-            cola.encolar(1);
+        if (c == '(') { 
+            cola.encolar(1); // encolar +1
+         // Si es otro caracter, no hacer nada
         // Si es ')', encolar -1
         } else { if (c == ')') {
             cola.encolar(-1);
@@ -73,14 +74,14 @@ package parcial;
  public static int registrarIntento ( Map < String , Integer > intentos , String nombre ) {
     
    // Verificar si el nombre ya existe en el mapa
-   if (intentos.containsKey(nombre)) {
+   if (intentos.containsKey(nombre)) { // pregunta si el mapa ya tiene el (nombre)
        // Si existe, incrementar el contador en 1
-       int contadorActual = intentos.get(nombre);
-       intentos.put(nombre, contadorActual + 1);
+       int contadorActual = intentos.get(nombre); // obtiene el valor actual asociado al nombre
+       intentos.put(nombre, contadorActual + 1); // actualiza el valor en el mapa
        return contadorActual + 1;
    } else {
        // Si no existe, iniciar en 1
-       intentos.put(nombre, 1);
+       intentos.put(nombre, 1); // agrega el nombre con un contador inicial de 1
        return 1;
    }
  }
@@ -101,3 +102,6 @@ package parcial;
  sc . close () ;
  }
  }
+
+
+ 
