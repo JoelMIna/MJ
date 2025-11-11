@@ -33,12 +33,12 @@ class Dijkstra { // Clase para algoritmo de camino más corto
     }
  
     public static void main(String[] args) { // Método principal
-        int[][] grafo = { // Creamos matriz de adyacencia (grafo dirigido)
+        int[][] grafo = { // Creamos matriz de adyacencia con peso y dirección 
                 { 0, 4, 3, 0, 0 }, // Conexiones desde vértice 0
                 { 0, 0, 1, 2, 0 }, // Conexiones desde vértice 1
-                { 0, 4, 0, 5, 2 }, // Conexiones desde vértice 2
+                { 0, 0, 0, 5, 2 }, // Conexiones desde vértice 2
                 { 0, 0, 0, 0, 7 }, // Conexiones desde vértice 3
-                { 0, 0, 0, 9, 0 } // Conexiones desde vértice 4
+                { 0, 0, 0, 0, 0 } // Conexiones desde vértice 4
         };          
         calcular(grafo, 0); // Calculamos distancias desde el vértice 0
     }
