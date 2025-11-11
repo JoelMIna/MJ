@@ -1,0 +1,149 @@
+import java.util.*;
+
+// Clase que contiene todo el ejemplo de Dijkstra con comentarios muy claros
+public class DijkstraExplained {
+
+    // Clase que representa una arista: desde el nodo actual hacia 'to' con peso 'weight'
+    static class Edge {
+        int to;         // destino de la arista
+        int weight;     // peso/costo de la arista
+        Edge(int to, int weight) { this.to = to; this.weight = weight; }
+    }
+
+    // Clase que usamos dentro de la PriorityQueue para sacar el nodo con menor distancia conocida
+    static class Node implements Comparable<Node> {
+        int vertex;     // número/índice del nodo
+        long dist;      // distancia conocida desde el inicio hasta este nodo (estimada)
+
+        Node(int vertex, long dist) {
+            this.vertex = vertex;
+            this.dist = dist;
+        }
+
+        // Para que la PriorityQueue ordene por distancia más pequeña primero
+        @Override
+        public int compareTo(Node other) {
+            return Long.compare(this.dist, other.dist);
+        }
+    }
+
+    // Clase para devolver resultados: distancias finales y array parent para reconstrucción
+    static class Result {
+        long[] dist;    // dist[i] = distancia mínima desde start hasta i (∞ si no alcanza)
+        int[] parent;   // parent[i] = nodo anterior en el camino mínimo a i (-1 si no existe)
+        Result(long[] dist, int[] parent) { this.dist = dist; this.parent = parent; }
+    }
+
+    // ----------------------- Dijkstra -----------------------
+    // graph: lista de adyacencia; start: nodo inicial (0..n-1)
+    // retorna un objeto Result con dist[] y parent[]
+    public static Result dijkstra(List<Edge>[] graph, int start) {
+        int n = graph.length;                          // número de nodos en el grafo
+        final long INF = Long.MAX_VALUE / 4;           // valor que representa "infinito"
+                                                      // (no usar Long.MAX_VALUE directo para evitar overflow)
+        long[] dist = new long[n];                     // dist[i] = mejor distancia conocida a i
+        int[] parent = new int[n];                     // parent[i] = nodo previo en el mejor camino
+        Arrays.fill(dist, INF);                        // inicializamos todas las distancias a ∞
+        Arrays.fill(parent, -1);                       // inicializamos padres a -1 (sin padre)
+
+        dist[start] = 0;                               // distancia del inicio a sí mismo es 0
+
+        // PriorityQueue que siempre entrega el nodo con la menor distancia conocida
+        PriorityQueue<Node> pq = new PriorityQueue<>();
+        pq.add(new Node(start, 0));                    // ponemos el inicio en la cola
+
+        // Mientras haya nodos por procesar en la cola
+        while (!pq.isEmpty()) {
+            Node cur = pq.poll();                      // sacamos el nodo con menor 'dist' estimada
+            int u = cur.vertex;                        // nodo actual
+            long d = cur.dist;                         // distancia estimada que venía con esa entrada
+
+            // Si la entrada que sacamos ya está obsoleta (hay una mejor en dist[]), la ignoramos
+            // Esto evita tener que eliminar entradas antiguas dentro de la PriorityQueue.
+            if (d > dist[u]) continue;
+
+            // Recorremos todas las aristas que salen de u
+            for (Edge e : graph[u]) {
+                int v = e.to;                         // vecino
+                long nd = dist[u] + e.weight;         // distancia nueva si vamos u -> v
+
+                // Si encontramos un camino mejor hacia v, lo actualizamos
+                if (nd < dist[v]) {
+                    dist[v] = nd;                     // actualizamos la mejor distancia a v
+                    parent[v] = u;                    // guardamos que venimos de u
+                    pq.add(new Node(v, nd));          // añadimos nueva entrada a la cola con la nueva distancia
+                    // Observación: puede quedar la entrada antigua de v en la cola,
+                    // pero cuando salga será descartada por el if (d > dist[u]) arriba.
+                }
+            }
+        }
+
+        return new Result(dist, parent);              // devolvemos distancias y padres
+    }
+
+    // ----------------- Reconstrucción de camino -----------------
+    // Toma target y parent[] y devuelve la lista de nodos desde start hasta target (si existe).
+    // Si target no es alcanzable, devuelve una lista vacía.
+    public static List<Integer> reconstructPath(int target, int[] parent, long[] dist) {
+        List<Integer> path = new ArrayList<>();
+
+        // Si la distancia al target es "infinito", no se puede llegar
+        // (usamos dist aquí para detectar inalcanzable)
+        if (dist[target] == Long.MAX_VALUE / 4) {
+            return path; // lista vacía = no alcanzable
+        }
+
+        // Recorremos parent[] desde target hacia atrás hasta llegar a -1 (origen)
+        for (int at = target; at != -1; at = parent[at]) {
+            path.add(at);               // añadimos el nodo
+        }
+        Collections.reverse(path);      // invertimos porque la construimos de destino a origen
+        return path;
+    }
+
+    // ----------------------- Ejemplo y prueba -----------------------
+    public static void main(String[] args) {
+        // Creamos un grafo de ejemplo con 6 nodos (0..5)
+        int n = 6;
+        List<Edge>[] graph = new ArrayList[n];
+        for (int i = 0; i < n; i++) graph[i] = new ArrayList<>();
+
+        // Añadimos aristas dirigidas (si quieres no dirigido, añade en ambas direcciones)
+        // Formato: graph[u].add(new Edge(v, peso));
+        graph[0].add(new Edge(1, 7));   // 0 -> 1 (peso 7)
+        graph[0].add(new Edge(2, 9));   // 0 -> 2 (peso 9)
+        graph[0].add(new Edge(5, 14));  // 0 -> 5 (peso 14)
+        graph[1].add(new Edge(2, 10));  // 1 -> 2 (peso 10)
+        graph[1].add(new Edge(3, 15));  // 1 -> 3 (peso 15)
+        graph[2].add(new Edge(3, 11));  // 2 -> 3 (peso 11)
+        graph[2].add(new Edge(5, 2));   // 2 -> 5 (peso 2)
+        graph[3].add(new Edge(4, 6));   // 3 -> 4 (peso 6)
+        graph[4].add(new Edge(5, 9));   // 4 -> 5 (peso 9)
+
+        int inicio = 0;                 // nodo de partida
+        Result res = dijkstra(graph, inicio); // ejecutamos Dijkstra
+
+        // Imprimir distancias finales
+        System.out.println("Distancias desde nodo " + inicio + ":");
+        for (int i = 0; i < n; i++) {
+            if (res.dist[i] >= Long.MAX_VALUE / 8) System.out.println(i + ": ∞ (inalcanzable)");
+            else System.out.println(i + ": " + res.dist[i]);
+        }
+
+        // Imprimir caminos reconstruidos desde inicio a cada nodo
+        System.out.println("\nCaminos desde nodo " + inicio + ":");
+        for (int target = 0; target < n; target++) {
+            List<Integer> path = reconstructPath(target, res.parent, res.dist);
+            if (path.isEmpty()) {
+                System.out.println(target + ": no alcanzable");
+            } else {
+                System.out.println(target + ": " + path);
+            }
+        }
+
+        // EJEMPLO de pedir solo el camino a un nodo específico (p.ej. 4)
+        int objetivo = 4;
+        System.out.println("\nCamino mínimo desde " + inicio + " hasta " + objetivo + ": " +
+                           reconstructPath(objetivo, res.parent, res.dist));
+    }
+}
